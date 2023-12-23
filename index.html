@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <title>Friend Voting System</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+ <div id="message" ><h1>Friend Voting System</h1></div>
+ <div>
+  <input type="text" id="addFriend">
+  <input type="button" id="addNew" value="Add Friend">
+ </div>
+
+ <table id="output"></table>
+</div>
+ <script>
+  let myArray = ['Shaharyar', 'Ahsan', 'Ali'];
+
+  const addFriendInput = document.getElementById('addFriend');
+  const addFriendButton = document.getElementById('addNew');
+  const outputTable = document.getElementById('output');
+
+  addFriendButton.addEventListener('click', function() {
+    const newFriend = addFriendInput.value.trim();
+    if (newFriend !== '') {
+      const index = myArray.findIndex(name => name.toLowerCase() === newFriend.toLowerCase());
+      if (index !== -1) {
+      
+        const voteCell = outputTable.rows[index].cells[2]; 
+        let currentVotes = parseInt(voteCell.textContent);
+        currentVotes++;
+        voteCell.textContent = currentVotes;
+      } else {
+        myArray.push(newFriend);
+        buildPage();
+      }
+      addFriendInput.value = '';
+    }
+  });
+
+  function buildPage() {
+    outputTable.innerHTML = '';
+    myArray.forEach(function(name, index) {
+      createRow(index, name);
+    });
+  }
+
+  function createRow(index, name) {
+    const newRow = document.createElement('tr');
+    const indexCell = document.createElement('td');
+    const nameCell = document.createElement('td');
+    const voteCell = document.createElement('td');
+
+    indexCell.textContent = index + 1;
+    nameCell.textContent = name;
+    voteCell.textContent = '0';
+
+    newRow.appendChild(indexCell);
+    newRow.appendChild(nameCell);
+    newRow.appendChild(voteCell);
+
+    outputTable.appendChild(newRow);
+
+
+    newRow.addEventListener('click', function() {
+      let currentVotes = parseInt(voteCell.textContent);
+      currentVotes++;
+      voteCell.textContent = currentVotes;
+    });
+  }
+
+  buildPage();
+ </script>
+</body>
+</html>
